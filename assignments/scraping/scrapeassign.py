@@ -9,3 +9,4 @@ br = mechanize.Browser()
 br.open('http://enr.sos.mo.gov/EnrNet/')
 html = br.response().read()
 
+print html
