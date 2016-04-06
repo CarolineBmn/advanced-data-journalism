@@ -6,7 +6,7 @@ output = open('output.csv', 'w')
 writer = csv.writer(output)
 
 # Get the HTML of the page
-br = mechanize.Browser()
+br = mechanize.Browser() #browser = browser class
 br.open('https://report.boonecountymo.org/mrcjava/servlet/SH01_MP.I00290s?max_rows=500')
 html = br.response().read()
 
@@ -19,7 +19,9 @@ main_table = soup.find('table',
     'class': ['collapse', 'shadow', 'BCSDTable']
 })
 
+
 # Now get the data from each table row
 for row in main_table.find_all('tr'):
     data = [cell.text for cell in row.find_all('td')]
     writer.writerow(data)
+    print data
