@@ -1,5 +1,4 @@
-import urllib2, csv
-import mechanize
+import csv, mechanize
 from bs4 import BeautifulSoup
 
 #Get output file ready
