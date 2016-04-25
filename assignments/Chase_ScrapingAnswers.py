@@ -13,9 +13,9 @@ br.open('http://enr.sos.mo.gov/EnrNet/CountyResults.aspx')
 html = br.response().read()
 soup = BeautifulSoup(html, "html.parser")
 
-
-county_dropdown = soup.find('table',
-    {'name': 'ctl00$MainContent$cboCounty'})
+county_dropdown = soup.find('select',
+    {'name':'ctl00$MainContent$cboCounty',
+    'id': 'cboCounty'
 
 #find option tags under select dropdown
 county_values = county_dropdown.find_all('option')
