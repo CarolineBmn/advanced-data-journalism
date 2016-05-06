@@ -4,10 +4,6 @@ import urllib2, csv
 import requests
 from bs4 import BeautifulSoup
 
-# Open input and output files
-#datafile = open('output.csv', 'w')
-#writer = csv.writer(output)
-
 # Get the HTML of the page
 r = requests.get('https://www.brewersassociation.org/directories/breweries/')
 
@@ -34,30 +30,35 @@ formdata = {'action': 'get_breweries', '_id': 'Tennessee', 'search_by': 'statena
 
 r = requests.post("https://www.brewersassociation.org/wp-admin/admin-ajax.php", data=formdata)
 
-print r.content
+html = r.content
 
-#for forms in br.forms():
-    #dir(forms)
-    #print forms
+soup = BeautifulSoup(html, "html5lib")
 
-#submit form
-#br.select_form(nr=0)
-#br.form['_id'] = ['Tennessee']
-#br.form ['search_by']
-#br.submit
-
-#for state in state_ids:
-    #state_name = state.text
-    #state_id = state['value']
+breweries = soup.find_all('ul', class_ = 'vcard simple')
 
 
+output = []
 
-# Get HTML
-    #html = br.response().read()
+for r in breweries:
+    names = r.find('li', class_ = 'name').text
+    address = r.find('li', class_ = 'address').text
+    brewtype = r.find('li', class_ = 'brewery_type').text
+    #print names, address, brewtype
+    url = r.find('li', class_ = 'url')
+    if url == None:
+        pass
+    if url is not None:
+        h = url.find('a').get('href')
 
-# Transform the HTML into a BeautifulSoup object
-    #soup = BeautifulSoup(html, "html.parser")
+    brewery_list = [names, address, brewtype, h]
+    output.append(brewery_list)
 
-
+for row in output:
+    print row
+ 
+# Open input and output files
+datafile = open('output.csv', 'w')
+writer = csv.writer(datafile)
+writer.writerows(output)
 
     
